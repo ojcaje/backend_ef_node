@@ -58,7 +58,7 @@ exports.findOne = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-    // const RestauranteId = req.query.restaurante;
+    const RestauranteId = req.query.restaurante;
     const fecha = req.query.fecha;
     console.log(req.query);
     var rangohora = req.query.horas;
