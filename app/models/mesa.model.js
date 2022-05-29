@@ -18,6 +18,11 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: 1
 
         },
+        capacidad: {
+            type: Sequelize.INTEGER,
+            defaultValue: 1
+
+        },
         id: {
             type: Sequelize.BIGINT,
             primaryKey: true,

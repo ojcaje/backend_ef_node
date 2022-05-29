@@ -28,7 +28,8 @@ exports.create = (req, res) => {
         nombre: req.body.nombre,
         id_restaurante: req.body.id_restaurante,
         posicion: req.body.posicion,
-        numero_planta: req.body.numero_planta
+        numero_planta: req.body.numero_planta,
+        capacidad: req.body.capacidad
     };
     // Guardamos a la base de datos
     Mesa.create(mesa)

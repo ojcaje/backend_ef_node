@@ -14,7 +14,7 @@ db.sequelize.sync();
 
 var corsOptions = {
 
-    origin: "http://localhost:9091"
+    origin: "http://localhost:4200"
 
 };
 
@@ -43,6 +43,7 @@ const PORT = process.env.PORT || 9090;
 require("./app/routes/restaurant.routes")(app);
 require("./app/routes/mesa.routes")(app);
 require("./app/routes/cliente.routes")(app);
+require("./app/routes/reserva.routes")(app);
 
 app.listen(PORT, () => {
 

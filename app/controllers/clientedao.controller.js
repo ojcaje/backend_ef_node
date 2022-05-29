@@ -59,29 +59,52 @@ exports.findOne = (req, res) => {
         });
 };
 
-exports.findAll = (req, res) => {
-    const nombre = req.query.nombre;
-    const cedula = req.query.cedula;
-
-    var condition = (nombre||cedula) ? { [Op.or]: [
-        {nombre: { [Op.iLike]: `%${nombre}%` }},
-        db.sequelize.where(
-            db.sequelize.cast(db.sequelize.col('Cliente.cedula'), 'varchar'),
-            {[Op.iLike]: `%${cedula}%`}
-        )
-    ]} : null;
-
-    Cliente.findAll({ where: condition })
+exports.findOneCedula = (req, res) => {
+    const cedula = req.params.cedula;
+    Cliente.findAll({where: {cedula: cedula}})
         .then(data => {
-            console.log("Se ha hecho un get de los clientes con nombre ", nombre, ":", data);
+            if (data.length===0) {
+                res.send(false);
+            } else {
+                res.send(true);
+            }
+            
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Error al obtener venta con cedula=" + cedula
+            });
+        });
+};
+
+
+exports.findAll = (req, res) => {
+    const cedula = req.query.cedula;
+    var condition = cedula ? { cedula: { [Op.iLike]: `%${cedula}%` } } : null;
+    if (cedula) {
+        Cliente.findAll({ where: {cedula:cedula} })
+            .then(data => {
+                res.send(data);
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                        err.message || "Ocurrio un error al obtener los Clientes."
+                });
+            });
+    } else {
+        Cliente.findAll()
+        .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Ocurrió un error al obtener los clientes."
+                    err.message || "Ocurrio un error al obtener los Clientes."
             });
         });
+    }
+
 };
 
 
