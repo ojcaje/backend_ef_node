@@ -62,7 +62,7 @@ exports.findOne = (req, res) => {
 
 exports.findAll = (req, res) => {
     const nombre = req.query.nombre;
-    var condition = nombre ? { mesa: { [Op.iLike]: `%${nombre}%` } } : null;
+    var condition = nombre ? { nombre: { [Op.iLike]: `%${nombre}%` } } : null;
 
     Mesa.findAll({ where: condition })
         .then(data => {

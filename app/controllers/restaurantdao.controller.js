@@ -54,7 +54,7 @@ exports.findOne = (req, res) => {
 
 exports.findAll = (req, res) => {
     const nombre = req.query.nombre;
-    var condition = nombre ? { restaurant: { [Op.iLike]: `%${nombre}%` } } : null;
+    var condition = nombre ? { nombre: { [Op.iLike]: `%${nombre}%` } } : null;
 
     Restaurant.findAll({ where: condition })
         .then(data => {
