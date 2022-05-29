@@ -1,6 +1,7 @@
 const db = require("../models");
 const Cliente = db.Cliente;
 const Op = db.Sequelize.Op;
+
 exports.create = (req, res) => {
 
     // Validate request
@@ -58,10 +59,17 @@ exports.findOne = (req, res) => {
         });
 };
 
-
 exports.findAll = (req, res) => {
     const nombre = req.query.nombre;
-    var condition = nombre ? { cliente: { [Op.iLike]: `%${nombre}%` } } : null;
+    const cedula = req.query.cedula;
+
+    var condition = (nombre||cedula) ? { [Op.or]: [
+        {nombre: { [Op.iLike]: `%${nombre}%` }},
+        db.sequelize.where(
+            db.sequelize.cast(db.sequelize.col('Cliente.cedula'), 'varchar'),
+            {[Op.iLike]: `%${cedula}%`}
+        )
+    ]} : null;
 
     Cliente.findAll({ where: condition })
         .then(data => {

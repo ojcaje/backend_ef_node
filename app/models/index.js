@@ -30,8 +30,6 @@ db.Sequelize = Sequelize;
 
 db.sequelize = sequelize;
 
-db.Ventas = require("./venta.model.js")(sequelize, Sequelize);
-
 db.Restaurant = require("./restaurant.model.js")(sequelize, Sequelize);
 
 db.Mesa = require("./mesa.model.js")(sequelize, Sequelize);
