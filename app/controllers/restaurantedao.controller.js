@@ -18,6 +18,7 @@ exports.create = (req, res) => {
     // Guardamos a la base de datos
     Restaurante.create(restaurante)
         .then(data => {
+            console.log("se ha creado un restaurant", data);
             res.send(data);
         })
         .catch(err => {
@@ -32,6 +33,7 @@ exports.findOne = (req, res) => {
     const id = req.params.id;
     Restaurante.findByPk(id)
         .then(data => {
+            console.log("se ha buscado un restaurant", data);
             res.send(data);
         })
         .catch(err => {
@@ -47,6 +49,7 @@ exports.findAll = (req, res) => {
 
     Restaurante.findAll({ where: condition })
         .then(data => {
+            console.log("se han buscado unos restaurants", data);
             res.send(data);
         })
         .catch(err => {
@@ -63,6 +66,7 @@ exports.update = (req, res) => {
     Restaurante.update(req.body, { where: { id: id } })
         .then(num => {
             if (num == 1) {
+                console.log("se ha actualizado el restaurant con id ", id);
                 res.send({
                     message: "El Restaurante se ha actualizado correctamente."
                 });
@@ -85,6 +89,7 @@ exports.delete = (req, res) => {
     Restaurante.destroy({ where: { id: id } })
         .then(num => {
             if (num == 1) {
+                console.log("se ha borrado el restaurant con id ", id);
                 res.send({
                     message: "El Restaurante fue borrado correctamente!"
                 });
@@ -102,6 +107,7 @@ exports.delete = (req, res) => {
 };
 
 exports.findRestauranteById = (restauranteId) => {
+    console.log("se ha buscado el restaurante con id ", id);
     return Restaurante.findByPk(restauranteId, { include: ["mesas"] })
         .then((restaurante) => {
             return restaurante;

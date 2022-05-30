@@ -4,7 +4,7 @@ module.exports = {
 
     USER: "postgres",
 
-    PASSWORD: "Diego123456",
+    PASSWORD: "postgres",
 
     PORT: 5432,
 

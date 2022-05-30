@@ -35,6 +35,7 @@ exports.create = (req, res) => {
     // Guardamos a la base de datos
     Reserva.create(reserva)
         .then(data => {
+            console.log("se ha creado una reserva", data);
             res.send(data);
         })
         .catch(err => {
@@ -49,6 +50,7 @@ exports.findOne = (req, res) => {
     const id = req.params.id;
     Reserva.findByPk(id, { include: ["Restaurante", "Mesa", "Cliente"] })
         .then(data => {
+            console.log("se ha buscado una reserva", data);
             res.send(data);
         })
         .catch(err => {
@@ -98,9 +100,11 @@ exports.findAll = (req, res) => {
             });
             console.log("mesas ocup: ", mesas);
             if(rangohora){
+                console.log("se han buscado unas reservas", data);
                 res.send(mesas);
             }else{
-            res.send(data);}
+                console.log("se han buscado unas reservas", data);
+                res.send(data);}
         })
         .catch(err => {
             res.status(500).send({
@@ -116,6 +120,8 @@ exports.update = (req, res) => {
     Reserva.update(req.body, { where: { id: id } })
         .then(num => {
             if (num == 1) {
+                console.log("se ha actualizado la reserva con id", id);
+
                 res.send({
                     message: "La Reserva se ha actualizado correctamente."
                 });
@@ -138,6 +144,7 @@ exports.delete = (req, res) => {
     Reserva.destroy({ where: { id: id } })
         .then(num => {
             if (num == 1) {
+                console.log("se ha borrado la reserva con id", id);
                 res.send({
                     message: "La Reserva fue borrada correctamente!"
                 });

@@ -19,6 +19,7 @@ exports.create = (req, res) => {
     // Guardamos a la base de datos
     Cliente.create(cliente)
         .then(data => {
+            console.log("se ha creado un cliente", data);
             res.send(data);
         })
         .catch(err => {
@@ -33,6 +34,7 @@ exports.findOne = (req, res) => {
     const id = req.params.id;
     Cliente.findByPk(id)
         .then(data => {
+            console.log("se ha buscado un cliente", data);
             res.send(data);
         })
         .catch(err => {
@@ -46,15 +48,17 @@ exports.findOneCedula = (req, res) => {
     Cliente.findAll({where: {cedula: cedula}})
         .then(data => {
             if (data.length===0) {
+                console.log("se ha buscado un cliente pero no existe");
                 res.send(false);
             } else {
+                console.log("se ha buscado un cliente que sí existe", data);
                 res.send(true);
             }
             
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error al obtener venta con cedula=" + cedula
+                message: "Error al obtener cliente con cedula=" + cedula
             });
         });
 };
@@ -64,6 +68,7 @@ exports.findAll = (req, res) => {
     if (cedula) {
         Cliente.findAll({ where: {cedula:cedula} })
             .then(data => {
+                console.log("se han buscado clientes", data);
                 res.send(data);
             })
             .catch(err => {
@@ -75,6 +80,7 @@ exports.findAll = (req, res) => {
     } else {
         Cliente.findAll()
         .then(data => {
+            console.log("se han buscado clientes", data);
             res.send(data);
         })
         .catch(err => {
@@ -92,6 +98,7 @@ exports.update = (req, res) => {
     Cliente.update(req.body, { where: { id: id } })
         .then(num => {
             if (num == 1) {
+                console.log("se ha actualizado un cliente con id", id);
                 res.send({
                     message: "El Cliente se ha actualizado correctamente."
                 });

@@ -34,6 +34,7 @@ exports.create = (req, res) => {
     // Guardamos a la base de datos
     Mesa.create(mesa)
         .then(data => {
+            console.log("se ha creado una mesa", data);
             res.send(data);
         })
         .catch(err => {
@@ -48,6 +49,7 @@ exports.findOne = (req, res) => {
     const id = req.params.id;
     Mesa.findByPk(id)
         .then(data => {
+            console.log("se ha buscado una mesa", data);
             res.send(data);
         })
         .catch(err => {
@@ -76,6 +78,7 @@ exports.findAll = (req, res) => {
             ],
         })
             .then(data => {
+                console.log("se han buscado las mesas", data);
                 res.send(data);
             })
             .catch(err => {
@@ -109,6 +112,7 @@ exports.update = (req, res) => {
     Mesa.update(req.body, { where: { id: id } })
         .then(num => {
             if (num == 1) {
+                console.log("se ha actualizado la mesa con id", id);
                 res.send({
                     message: "La Mesa se ha actualizado correctamente."
                 });
@@ -131,6 +135,7 @@ exports.delete = (req, res) => {
     Mesa.destroy({ where: { id: id } })
         .then(num => {
             if (num == 1) {
+                console.log("se ha borrado la mesa con id ", id);
                 res.send({
                     message: "La Mesa fue borrado correctamente!"
                 });
