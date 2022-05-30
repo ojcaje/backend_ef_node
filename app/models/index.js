@@ -30,16 +30,20 @@ db.Sequelize = Sequelize;
 
 db.sequelize = sequelize;
 
-db.Restaurant = require("./restaurant.model.js")(sequelize, Sequelize);
-
+db.Restaurante = require("./restaurante.model.js")(sequelize, Sequelize);
 db.Mesa = require("./mesa.model.js")(sequelize, Sequelize);
-
+db.Reserva = require("./reserva.model.js")(sequelize, Sequelize);
 db.Cliente = require("./cliente.model.js")(sequelize, Sequelize);
 
-db.Reserva = require("./reserva.model.js")(sequelize, Sequelize);
 
-db.Restaurant.hasMany(db.Reserva, { as: "reservas" });
-db.Reserva.belongsTo(db.Restaurant, {
+db.Restaurante.hasMany(db.Mesa, { as: "mesas" });
+db.Mesa.belongsTo(db.Restaurante, {
+  foreignKey: "RestauranteId",
+  as: "Restaurante",
+}); 
+
+db.Restaurante.hasMany(db.Reserva, { as: "reservas" });
+db.Reserva.belongsTo(db.Restaurante, {
   foreignKey: "RestauranteId",
   as: "Restaurante",
 });

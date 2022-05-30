@@ -1,6 +1,8 @@
 const db = require("../models");
 const Reserva = db.Reserva;
 const Op = db.Sequelize.Op;
+/* var moment = require('moment'); 
+moment().format('l');  */
 
 exports.create = (req, res) => {
     // Validate request
@@ -24,6 +26,7 @@ exports.create = (req, res) => {
     }
     // crea una Reserva
     const reserva = {
+        nombre: req.body.nombre,
         fecha: req.body.fecha,
         rangohora: req.body.rangohora,
         cantidad: req.body.cantidad,
@@ -66,25 +69,43 @@ exports.findAll = (req, res) => {
     console.log(mesa);
     console.log(horas); */
     
-    var condition = RestauranteId ? { RestauranteId: { [Op.eq]: `${RestauranteId}` } } : null;
-    if (!condition) {
-        const fecha = req.query.fecha;
-        var condition = fecha ? { fecha: { [Op.eq]: `${fecha}` } } : null;
-    }
-    if (!condition) {
-        const ClienteId = req.query.cliente;
-        var condition = ClienteId ? { ClienteId: { [Op.eq]: `${ClienteId}` } } : null;
-    }
+    // var condition = RestauranteId ? { RestauranteId: { [Op.eq]: `${RestauranteId}` } } : null;
+    // if (!condition) {
+    //     const fecha = req.query.fecha;
+    //     var condition = fecha ? { fecha: { [Op.eq]: `${fecha}` } } : null;
+    // }
+    // if (!condition) {
+    //     const ClienteId = req.query.cliente;
+    //     var condition = ClienteId ? { ClienteId: { [Op.eq]: `${ClienteId}` } } : null;
+    // }
     var mesas = new Array();
     if (rangohora) {
         if (!Array.isArray(rangohora)) {
             rangohora=[rangohora];
         }
-        const horas = rangohora.map(Number);
+    }
+    //     const horas = rangohora.map(Number);
         
-        Reserva.findAll({ include: ["Restaurante", "Mesa", "Cliente"], where: {rangohora: {[Op.in]: horas}, RestauranteId: RestauranteId, fecha: fecha},
+        // Reserva.findAll({ include: ["Restaurante", "Mesa", "Cliente"], where: {rangohora: {[Op.in]: horas}, RestauranteId: RestauranteId, fecha: fecha},
+
+        if(fecha){
+            if(RestauranteId){
+                var condition = (fecha||RestauranteId) ? { [Op.and]: [
+                    {fecha:  `%${fecha}%` },
+                    {RestauranteId:  RestauranteId },
+                ]} : null;
+            }else{
+                var condition = fecha ? { fecha: { [Op.eq]: `%${fecha}%` } } : null;
+            }
+            
+        }else{
+            var condition = RestauranteId ? { RestauranteId: { [Op.eq]: RestauranteId } } : null;
+        }
+        
+
+        Reserva.findAll({ include: ["Restaurante", "Mesa", "Cliente"], where: condition,
         order: [
-                ['rangohora', 'ASC'],
+                ['fecha', 'ASC'],
                 ['MesaId', 'ASC'],
             ],
         })
@@ -93,7 +114,10 @@ exports.findAll = (req, res) => {
                 mesas.push(reseva.MesaId);
             });
             console.log("mesas ocup: ", mesas);
-            res.send(mesas);
+            if(rangohora){
+                res.send(mesas);
+            }else{
+            res.send(data);}
         })
         .catch(err => {
             res.status(500).send({
@@ -101,23 +125,23 @@ exports.findAll = (req, res) => {
                     err.message || "Ocurrio un error al obtener los Reservas."
             });
         });
-    }else{
-        Reserva.findAll({ include: ["Restaurante", "Mesa", "Cliente"], where: condition,
-                order: [
-                    ['rangohora', 'ASC'],
-                    ['MesaId', 'ASC'],
-                ],
-            })
-            .then(data => {
-                res.send(data);
-            })
-            .catch(err => {
-                res.status(500).send({
-                    message:
-                        err.message || "Ocurrio un error al obtener los Reservas."
-                });
-            });
-    }
+    // }else{
+        // Reserva.findAll({ include: ["Restaurante", "Mesa", "Cliente"], where: condition,
+        //         order: [
+        //             ['rangohora', 'ASC'],
+        //             ['MesaId', 'ASC'],
+        //         ],
+        //     })
+        //     .then(data => {
+        //         res.send(data);
+        //     })
+        //     .catch(err => {
+        //         res.status(500).send({
+        //             message:
+        //                 err.message || "Ocurrio un error al obtener los Reservas."
+        //         });
+        //     });
+    // }
 };
 
 exports.update = (req, res) => {

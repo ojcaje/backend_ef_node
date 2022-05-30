@@ -1,21 +1,16 @@
 module.exports = (sequelize, Sequelize) => {
-    const Cliente = sequelize.define("Cliente", {
+    const Restaurante = sequelize.define("Restaurante", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        cedula: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-            unique: true
-        },
         nombre: {
             type: Sequelize.STRING
         },
-        apellido: {
+        direccion: {
             type: Sequelize.STRING
-        }   
+        }  
     });
-    return Cliente;
+    return Restaurante;
 };

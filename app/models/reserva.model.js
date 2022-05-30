@@ -1,4 +1,4 @@
-const { Restaurant } = require(".");
+const { Restaurante } = require(".");
 
 module.exports = (sequelize, Sequelize) => {
     const Reserva = sequelize.define("Reserva", {

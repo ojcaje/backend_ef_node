@@ -1,32 +1,25 @@
 module.exports = (sequelize, Sequelize) => {
     const Mesa = sequelize.define("Mesa", {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         nombre: {
             type: Sequelize.STRING
         },
-        id_restaurante: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: 'Restaurants',
-                key: 'id'
-            }
+        posicionx: {
+            type: Sequelize.INTEGER
         },
-        posicion: {
-            type: Sequelize.ARRAY(Sequelize.DECIMAL)
+        posiciony: {
+            type: Sequelize.INTEGER
         },
-        numero_planta: {
+        planta: {
             type: Sequelize.INTEGER,
             defaultValue: 1
-
         },
         capacidad: {
-            type: Sequelize.INTEGER,
-            defaultValue: 1
-
-        },
-        id: {
-            type: Sequelize.BIGINT,
-            primaryKey: true,
-            autoIncrement: true
+            type: Sequelize.INTEGER
         }
     });
     return Mesa;
