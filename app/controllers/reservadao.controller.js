@@ -1,11 +1,9 @@
 const db = require("../models");
 const Reserva = db.Reserva;
 const Op = db.Sequelize.Op;
-/* var moment = require('moment'); 
-moment().format('l');  */
+
 
 exports.create = (req, res) => {
-    // Validate request
     if (!req.body.RestauranteId) {
         res.status(400).send({
             message: "Debe ingresar el Restaurante de la Reserva!"
@@ -65,28 +63,13 @@ exports.findAll = (req, res) => {
     const fecha = req.query.fecha;
     console.log(req.query);
     var rangohora = req.query.horas;
-    /* const mesa = JSON.parse(rangohora.split(" ").join(""));
-    console.log(mesa);
-    console.log(horas); */
     
-    // var condition = RestauranteId ? { RestauranteId: { [Op.eq]: `${RestauranteId}` } } : null;
-    // if (!condition) {
-    //     const fecha = req.query.fecha;
-    //     var condition = fecha ? { fecha: { [Op.eq]: `${fecha}` } } : null;
-    // }
-    // if (!condition) {
-    //     const ClienteId = req.query.cliente;
-    //     var condition = ClienteId ? { ClienteId: { [Op.eq]: `${ClienteId}` } } : null;
-    // }
     var mesas = new Array();
     if (rangohora) {
         if (!Array.isArray(rangohora)) {
             rangohora=[rangohora];
         }
     }
-    //     const horas = rangohora.map(Number);
-        
-        // Reserva.findAll({ include: ["Restaurante", "Mesa", "Cliente"], where: {rangohora: {[Op.in]: horas}, RestauranteId: RestauranteId, fecha: fecha},
 
         if(fecha){
             if(RestauranteId){
@@ -125,23 +108,6 @@ exports.findAll = (req, res) => {
                     err.message || "Ocurrio un error al obtener los Reservas."
             });
         });
-    // }else{
-        // Reserva.findAll({ include: ["Restaurante", "Mesa", "Cliente"], where: condition,
-        //         order: [
-        //             ['rangohora', 'ASC'],
-        //             ['MesaId', 'ASC'],
-        //         ],
-        //     })
-        //     .then(data => {
-        //         res.send(data);
-        //     })
-        //     .catch(err => {
-        //         res.status(500).send({
-        //             message:
-        //                 err.message || "Ocurrio un error al obtener los Reservas."
-        //         });
-        //     });
-    // }
 };
 
 exports.update = (req, res) => {
