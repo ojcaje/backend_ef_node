@@ -1,4 +1,5 @@
 # backend_tp2_node
+### se realizo el grafico de mesas en el frontend, en el menu restaurantes, boton ver plano de mesas
 ## crear base de datos
 nombre de la base de datos: dbpwb
 ## ejecutar server
@@ -29,3 +30,4 @@ POST http://localhost:9090/api/mesa
     "planta": 1,
     "capacidad": 4
 }
+
