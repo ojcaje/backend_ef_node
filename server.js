@@ -44,6 +44,10 @@ require("./app/routes/restaurante.routes")(app);
 require("./app/routes/mesa.routes")(app);
 require("./app/routes/cliente.routes")(app);
 require("./app/routes/reserva.routes")(app);
+require("./app/routes/categoria.routes")(app);
+require("./app/routes/producto.routes")(app);
+require("./app/routes/cabecera_consumo.routes")(app);
+require("./app/routes/detalle_consumo.routes")(app);
 
 app.listen(PORT, () => {
 

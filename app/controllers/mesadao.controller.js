@@ -47,14 +47,26 @@ exports.create = (req, res) => {
 
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Mesa.findByPk(id)
+    Mesa.findByPk(id, {include: [
+            {
+                model: db.CabeceraConsumo, as: 'cabeceras_consumos',
+                where: { estado: "abierto" },
+                include: [
+                    {model: db.Cliente, as: 'Cliente' },
+                    {
+                        model: db.DetalleConsumo, as: 'detalles_consumos',
+                        include: [{model: db.Producto, as: 'Producto'}]
+                    }
+                ],
+            }
+        ]})
         .then(data => {
             console.log("se ha buscado una mesa", data);
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error al obtener mesa con id=" + id
+                message: err + ". Error al obtener mesa con id=" + id
             });
         });
 };
