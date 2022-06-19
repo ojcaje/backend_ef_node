@@ -169,6 +169,9 @@ json
 ### Ver todas las cabeceras
 >**GET** http://localhost:9090/api/cabecera_consumo/
 
+### Cerrar una Mesa
+>**PUT** http://localhost:9090/api/cabecera_consumo/cerrar/?MesaId=:id
+
 
 ## Model DetalleConsumo
 

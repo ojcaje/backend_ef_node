@@ -187,3 +187,28 @@ exports.delete = (req, res) => {
             });
         });
 };
+
+// cerrar mesa
+exports.cerrar = (req, res) => {
+    const id = req.query.MesaId;
+    db.Mesa.findByPk(id, {include: [
+        {
+            model: db.CabeceraConsumo, as: 'cabeceras_consumos',
+            where: { estado: "abierto" },
+            include: [
+                {model: db.Cliente, as: 'Cliente' },
+                {
+                    model: db.DetalleConsumo, as: 'detalles_consumos',
+                    include: [{model: db.Producto, as: 'Producto'}]
+                }],
+        }]})
+        .then(mesa => {
+            mesa.cabeceras_consumos[0].update({ estado: "cerrado", fecha_y_hora_cierre: Date.now()});
+            mesa.reload();
+            res.send(mesa);
+        })
+        .catch(err => {
+                res.status(500).send({message: err + ". Error cerrando la Mesa con id= " + id});
+            }
+        );
+};
