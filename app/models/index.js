@@ -62,7 +62,7 @@ db.Reserva.belongsTo(db.Cliente, {
   as: "Cliente",
 });
 db.Categoria.hasMany(db.Producto, { as: "productos" });
-db.Producto.belongsTo(db.Reserva, {
+db.Producto.belongsTo(db.Categoria, {
     foreignKey: "CategoriaId",
     as: "Categoria",
 });

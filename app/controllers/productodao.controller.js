@@ -57,7 +57,7 @@ exports.findAll = (req, res) => {
     const nombre = req.query.nombre;
     var condition = nombre ? { nombre: { [Op.iLike]: `%${nombre}%` } } : null;
 
-    Producto.findAll({ where: condition })
+    Producto.findAll({ include: [{model: db.Categoria, as: 'Categoria'}], where: condition })
         .then(data => {
             console.log("se han buscado un producto", data);
             res.send(data);
