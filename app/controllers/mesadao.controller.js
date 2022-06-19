@@ -50,6 +50,7 @@ exports.findOne = (req, res) => {
     Mesa.findByPk(id, {include: [
             {
                 model: db.CabeceraConsumo, as: 'cabeceras_consumos',
+                required: false,
                 where: { estado: "abierto" },
                 include: [
                     {model: db.Cliente, as: 'Cliente' },
