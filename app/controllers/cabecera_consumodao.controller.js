@@ -3,7 +3,7 @@ const CabeceraConsumo = db.CabeceraConsumo;
 const Op = db.Sequelize.Op;
 
 
-exports.create = async (req, res) => {
+exports.create = (req, res) => {
     // Validate request
     if (!req.body.estado) {
         res.status(400).send({
@@ -38,41 +38,34 @@ exports.create = async (req, res) => {
         fecha_y_hora_creacion: req.body.fecha_y_hora_creacion,
         fecha_y_hora_cierre: req.body.fecha_y_hora_cierre
     };
-    try {
-        const data = await db.sequelize.transaction(async function (transaction) {
-            // Guardamos a la base de datos
-            const ya_abierta = await CabeceraConsumo.findAll({
-                where : {
-                    [Op.and]: [
-                        {MesaId:  req.body.MesaId },
-                        {estado:  'abierto' }
-                    ]
-                }
-            });
-
-            if (!ya_abierta[0])
-            {
-                const nueva_cabecera_consumo = await CabeceraConsumo.create(cabecera_consumo)
-                return nueva_cabecera_consumo;
+    // Guardamos a la base de datos
+    CabeceraConsumo.findOne({
+        where : {
+            [Op.and]: [
+                {MesaId:  req.body.MesaId },
+                {estado:  'abierto' }
+            ]
+        }
+    })
+        .then(ya_abierta=> {
+            if(!ya_abierta){
+                CabeceraConsumo.create(cabecera_consumo)
+                    .then(nueva_cabecera=> {
+                        console.log("se ha creado una cabecera_consumo", nueva_cabecera);
+                        res.send(nueva_cabecera);
+                    });
             }
             else
             {
                 console.log("Se ha intentado abrir una mesa que ya estaba abierta", ya_abierta);
                 throw Error("La mesa ya se encuentra abierta. ");
             }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message + "Ha ocurrido un error al guardar la cabecera_consumo."
+            });
         });
-
-        console.log("se ha creado una cabecera_consumo", data);
-        res.send(data);
-
-    } catch (err) {
-        res.status(500).send({
-            message:
-                err.message || "" +
-                "Ha ocurrido un error al guardar la cabecera_consumo."
-        });
-    }
-
 };
 
 // encontrar por id
