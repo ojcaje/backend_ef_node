@@ -148,7 +148,7 @@ exports.update = (req, res) => {
     CabeceraConsumo.update(req.body, { where: { id: id } })
         .then(num => {
             if (num == 1) {
-                console.log("se ha actualizado la cabecera con id ", id);
+                console.log("se ha actualizado la cabecera con id ", id, ". Detalles: ", req.body);
                 res.send({
                     message: "La cabecera se ha actualizado correctamente."
                 });
@@ -205,6 +205,7 @@ exports.cerrar = (req, res) => {
         .then(mesa => {
             mesa.cabeceras_consumos[0].update({ estado: "cerrado", fecha_y_hora_cierre: Date.now()});
             mesa.reload();
+            console.log("se ha cerrado la mesa con id ", id, ". Detalles: ", mesa);
             res.send(mesa);
         })
         .catch(err => {
